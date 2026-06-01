@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auditoria – Consumo de Embalagem em Poltronas</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark:    #2a2a1e;
+    --olive:   #4a4a32;
+    --khaki:   #8a8a5a;
+    --sand:    #b8b07a;
+    --cream:   #f5f2e8;
+    --white:   #ffffff;
+    --red:     #c0392b;
+    --green:   #2e7d32;
+    --slate:   #607d8b;
+    --border:  #ddd8c4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  header {
+    background: var(--dark);
+    padding: 2rem 2.5rem 1.75rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--cream);
+    line-height: 1.2;
+    max-width: 520px;
+  }
+
+  header .meta {
+    font-size: 0.8rem;
+    color: var(--sand);
+    text-align: right;
+    line-height: 1.7;
+  }
+
+  .logo-tag {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--sand);
+    letter-spacing: 0.02em;
+  }
+
+  main { padding: 2rem 2.5rem; max-width: 1400px; margin: 0 auto; }
+
+  /* ── Section label ── */
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--khaki);
+    margin-bottom: 1rem;
+    margin-top: 2.5rem;
+    padding-bottom: .4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── KPI cards ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .kpi {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.1rem 1.2rem;
+  }
+
+  .kpi .kpi-label {
+    font-size: 0.72rem;
+    color: var(--khaki);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .4rem;
+    line-height: 1.3;
+  }
+
+  .kpi .kpi-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1;
+  }
+
+  .kpi .kpi-value.red   { color: var(--red); }
+  .kpi .kpi-value.green { color: #27ae60; }
+  .kpi .kpi-value.blue  { color: var(--slate); }
+
+  .kpi .kpi-sub {
+    font-size: 0.7rem;
+    color: var(--khaki);
+    margin-top: .3rem;
+  }
+
+  /* ── Chart cards ── */
+  .charts-row {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .charts-row.two { grid-template-columns: 1fr 1fr; }
+  .charts-row.one { grid-template-columns: 1fr; }
+
+  .chart-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .chart-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 1.25rem;
+  }
+
+  .chart-wrap {
+    position: relative;
+  }
+
+  .chart-wrap.sm  { height: 260px; }
+  .chart-wrap.md  { height: 340px; }
+  .chart-wrap.lg  { height: 380px; }
+
+  footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    color: var(--khaki);
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo-tag">SoHma · SoHome</div>
+    <h1>Auditoria do Consumo de Embalagem em Poltronas</h1>
+  </div>
+  <div class="meta">
+    Período: 02/04 – 10/04/2026<br>
+    34 registros · 14 modelos<br>
+    Limite de desvio: ±5%
+  </div>
+</header>
+
+<main>
+
+  <!-- ── KPIs ── -->
+  <div class="section-label">Indicadores gerais</div>
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-label">Registros auditados</div>
+      <div class="kpi-value">34</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Modelos distintos</div>
+      <div class="kpi-value">14</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Desvio médio isomanta</div>
+      <div class="kpi-value red">+83,7%</div>
+      <div class="kpi-sub">Limite: 5%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Desvio médio malha</div>
+      <div class="kpi-value red">+5,5%</div>
+      <div class="kpi-sub">Limite: 5%</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Desvio médio plástico</div>
+      <div class="kpi-value blue">+2,0%</div>
+      <div class="kpi-sub">Limite: 5%</div>
+    </div>
+  </div>
+
+  <!-- ── Gráficos de resumo: barras por dia + pizza ── -->
+  <div class="section-label">Resumo da auditoria</div>
+  <div class="charts-row two">
+
+    <div class="chart-card">
+      <h3>Auditorias por dia</h3>
+      <div class="chart-wrap sm">
+        <canvas id="chartDia"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Uso de cascão</h3>
+      <div class="chart-wrap sm">
+        <canvas id="chartPizza"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Isomanta ── -->
+  <div class="section-label">Consumo auditado vs sistema — Isomanta (M²)</div>
+  <div class="charts-row one">
+    <div class="chart-card">
+      <h3>Isomanta (M²) · Auditado vs Sistema</h3>
+      <div class="chart-wrap lg">
+        <canvas id="chartIso"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Plástico ── -->
+  <div class="section-label">Consumo auditado vs sistema — Plástico (KG)</div>
+  <div class="charts-row one">
+    <div class="chart-card">
+      <h3>Plástico (KG) · Auditado vs Sistema</h3>
+      <div class="chart-wrap md">
+        <canvas id="chartPlast"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Malha ── -->
+  <div class="section-label">Consumo auditado vs sistema — Malha (KG)</div>
+  <div class="charts-row one">
+    <div class="chart-card">
+      <h3>Malha (KG) · Auditado vs Sistema</h3>
+      <div class="chart-wrap md">
+        <canvas id="chartMalha"></canvas>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  SoHma · Auditoria de Embalagem em Poltronas · Abril 2026
+</footer>
+
+<script>
+// ── Cores base ──
+const C_DARK    = '#3a3a2a';
+const C_OLIVE   = '#6b5a3e';
+const C_SAND    = '#b8b07a';
+const C_SLATE   = '#4a7a96';
+const C_SLATE_L = '#8fb4c8';
+const C_KHAKI   = '#b0b0a0';
+const C_RED     = '#c0392b';
+const C_GREEN   = '#2e7d32';
+const C_GREY    = '#555555';
+
+// ── Plugin: rótulos de desvio % acima das barras auditadas ──
+const desvioPlugin = {
+  id: 'desvioLabel',
+  afterDatasetsDraw(chart, args, opts) {
+    const { ctx, data } = chart;
+    // dataset index 0 = auditado
+    const meta = chart.getDatasetMeta(0);
+    meta.data.forEach((bar, i) => {
+      const desvio = opts.desvios[i];
+      if (desvio === null || desvio === undefined) return;
+      const sinal  = desvio >= 0 ? '+' : '';
+      const label  = `${sinal}${desvio}%`;
+      const cor    = desvio > 5 ? C_RED : (desvio < -5 ? C_GREEN : C_GREY);
+      ctx.save();
+      ctx.font = `bold ${opts.fontSize || 11}px 'DM Sans', sans-serif`;
+      ctx.fillStyle = cor;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'bottom';
+      ctx.fillText(label, bar.x, bar.y - 3);
+      ctx.restore();
+    });
+  }
+};
+Chart.register(desvioPlugin);
+
+// ── Opções comuns ──
+function baseOpts(title, ylabel, desvios, fontSize) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: { family: "'DM Sans'", size: 12 }, boxWidth: 14, padding: 16 } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}` } },
+      desvioLabel: { desvios, fontSize: fontSize || 11 }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: "'DM Sans'", size: 12 } } },
+      y: { beginAtZero: true, title: { display: true, text: ylabel, font: { family: "'DM Sans'", size: 12 } },
+           grid: { color: '#e8e4d4' }, ticks: { font: { family: "'DM Sans'", size: 11 } } }
+    }
+  };
+}
+
+// ─────────────────────────────────────────────
+// 1. Auditorias por dia
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartDia'), {
+  type: 'bar',
+  data: {
+    labels: ['02/04','06/04','07/04','08/04','09/04','10/04'],
+    datasets: [{
+      label: 'Registros',
+      data: [4, 7, 7, 4, 10, 2],
+      backgroundColor: C_DARK,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      desvioPlugin: false,
+      desvioLabel: { desvios: [] },
+      datalabels: false,
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: "'DM Sans'", size: 13 } } },
+      y: { beginAtZero: true, grid: { color: '#e8e4d4' },
+           ticks: { font: { family: "'DM Sans'", size: 12 }, stepSize: 2 } }
+    },
+    // plugin personalizado inline para rótulos no topo
+  },
+  plugins: [{
+    id: 'barLabels',
+    afterDatasetsDraw(chart) {
+      const { ctx } = chart;
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const v = chart.data.datasets[0].data[i];
+        ctx.save();
+        ctx.font = "bold 13px 'DM Sans', sans-serif";
+        ctx.fillStyle = C_DARK;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(v, bar.x, bar.y - 3);
+        ctx.restore();
+      });
+    }
+  }]
+});
+
+// ─────────────────────────────────────────────
+// 2. Pizza cascão
+// ─────────────────────────────────────────────
+new Chart(document.getElementById('chartPizza'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Sem cascão (25)', 'Com cascão (9)'],
+    datasets: [{
+      data: [25, 9],
+      backgroundColor: [C_SAND, C_DARK],
+      borderWidth: 2,
+      borderColor: '#fff',
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '55%',
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { family: "'DM Sans'", size: 13 }, padding: 18, boxWidth: 16 } },
+      desvioLabel: { desvios: [] }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// 3. Isomanta
+// ─────────────────────────────────────────────
+const isoLabels  = ['ABACO','AIDA','AME','ANNE','ARLO','CAMA&\nSOFA','DOMIA','INTIMITE','IVY','NEW\nHARRY','ORLY'];
+const isoLabelsX = ['ABACO','AIDA','AME','ANNE','ARLO','CAMA&SOFA','DOMIA','INTIMITE','IVY','NEW HARRY','ORLY'];
+const isoAud     = [2.964, 15.744, 8.472, 11.822, 3.324, 14.232, 13.338, 17.232, 3.249, 10.476, 14.880];
+const isoSis     = [1.800,  6.030,  6.380,  6.080,  7.700,  8.285,  6.670,  6.820,  null,  6.230,  8.440];
+const isoDesvios = [65, 161, 33, 94, -57, 72, 100, 153, null, 68, 76];
+
+new Chart(document.getElementById('chartIso'), {
+  type: 'bar',
+  data: {
+    labels: isoLabelsX,
+    datasets: [
+      { label: 'Auditado', data: isoAud, backgroundColor: C_DARK, borderRadius: 3 },
+      { label: 'Sistema',  data: isoSis, backgroundColor: C_KHAKI, borderRadius: 3 }
+    ]
+  },
+  options: {
+    ...baseOpts('', 'M²', isoDesvios, 12),
+    plugins: {
+      ...baseOpts('', 'M²', isoDesvios, 12).plugins,
+      legend: { position: 'top', labels: { font: { family: "'DM Sans'", size: 13 }, boxWidth: 14, padding: 16 } },
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// 4. Plástico
+// ─────────────────────────────────────────────
+const plastLabels  = ['ABACO','AIDA','AME','ANNE','ARLO','CAMA&SOFA','DOMIA','INTIMITE','IVY','LIZZ','NEW HARRY','ORLY','PALERMO','SABRE'];
+const plastAud     = [0.233, 0.243, 0.220, 0.237, 0.227, 0.238, 0.211, 0.253, 0.208, 0.206, 0.210, 0.274, 0.196, 0.245];
+const plastSis     = Array(14).fill(0.22);
+const plastDesvios = [6, 10, 0, 8, 3, 8, -4, 15, -6, -6, -5, 24, -11, 12];
+
+new Chart(document.getElementById('chartPlast'), {
+  type: 'bar',
+  data: {
+    labels: plastLabels,
+    datasets: [
+      { label: 'Plástico auditado', data: plastAud, backgroundColor: C_OLIVE, borderRadius: 3 },
+      { label: 'Plástico sistema',  data: plastSis, backgroundColor: '#c4a882', borderRadius: 3 }
+    ]
+  },
+  options: {
+    ...baseOpts('', 'KG', plastDesvios, 11),
+    plugins: {
+      ...baseOpts('', 'KG', plastDesvios, 11).plugins,
+      legend: { position: 'top', labels: { font: { family: "'DM Sans'", size: 13 }, boxWidth: 14, padding: 16 } },
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: "'DM Sans'", size: 11 } } },
+      y: { beginAtZero: true, min: 0, max: 0.35,
+           title: { display: true, text: 'KG', font: { family: "'DM Sans'", size: 12 } },
+           grid: { color: '#e8e4d4' }, ticks: { font: { family: "'DM Sans'", size: 11 } } }
+    }
+  }
+});
+
+// ─────────────────────────────────────────────
+// 5. Malha
+// ─────────────────────────────────────────────
+const malhaLabels  = ['AIDA','AME','ANNE','ARLO','CAMA&SOFA','DOMIA','INTIMITE','NEW HARRY','ORLY'];
+const malhaAud     = [0.3296, 0.3296, 0.3536, 0.1616, 0.4288, 0.3336, 0.3504, 0.2928, 0.4392];
+const malhaSis     = [0.3200, 0.3200, 0.3200, 0.3936, 0.4192, 0.3200, 0.3200, 0.3200, 0.3200];
+const malhaDesvios = [3, 3, 10, -59, 2, 4, 9, -8, 37];
+
+new Chart(document.getElementById('chartMalha'), {
+  type: 'bar',
+  data: {
+    labels: malhaLabels,
+    datasets: [
+      { label: 'Malha auditada', data: malhaAud, backgroundColor: C_SLATE,   borderRadius: 3 },
+      { label: 'Malha sistema',  data: malhaSis, backgroundColor: C_SLATE_L, borderRadius: 3 }
+    ]
+  },
+  options: {
+    ...baseOpts('', 'KG', malhaDesvios, 12),
+    plugins: {
+      ...baseOpts('', 'KG', malhaDesvios, 12).plugins,
+      legend: { position: 'top', labels: { font: { family: "'DM Sans'", size: 13 }, boxWidth: 14, padding: 16 } },
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: "'DM Sans'", size: 12 } } },
+      y: { beginAtZero: true, min: 0, max: 0.52,
+           title: { display: true, text: 'KG', font: { family: "'DM Sans'", size: 12 } },
+           grid: { color: '#e8e4d4' }, ticks: { font: { family: "'DM Sans'", size: 11 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
